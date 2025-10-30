@@ -96,11 +96,24 @@ struct ContentView: View {
          -105.139472
     ]
     
+    let distance: [Int] =
+    [
+        318, 480, 308, 415, 449, 294, 426, 358, 404, 339, 276, 387, 322, 403, 415, 408, 614, 386
+    ]
+    
     @State var camera: MapCameraPosition = .automatic
     
     @State var zoomed: Bool = false
     
+    @State var start: Bool = true
+    
     @State var index: Int = 0
+    
+    @State var holeScore: Int = 0
+    
+    @State var totalScore: Int = 0
+    
+    @State var mapStyle: String = "hybrid"
     
     var body: some View {
         Map(position: $camera) {
@@ -124,54 +137,213 @@ struct ContentView: View {
             Marker("5", monogram: Text("5"),coordinate: CLLocationCoordinate2D(latitude: teeLat[4], longitude: teeLong[4]))
                 .tint(.blue)
             Marker("5", systemImage: "flag.fill", coordinate: CLLocationCoordinate2D(latitude: bsktLat[4], longitude: bsktLong[4]))
+            //Hole 6
+            Marker("6", monogram: Text("6"),coordinate: CLLocationCoordinate2D(latitude: teeLat[5], longitude: teeLong[5]))
+                .tint(.blue)
+            Marker("6", systemImage: "flag.fill", coordinate: CLLocationCoordinate2D(latitude: bsktLat[5], longitude: bsktLong[5]))
+            //Hole 7
+            Marker("7", monogram: Text("7"),coordinate: CLLocationCoordinate2D(latitude: teeLat[6], longitude: teeLong[6]))
+                .tint(.blue)
+            Marker("7", systemImage: "flag.fill", coordinate: CLLocationCoordinate2D(latitude: bsktLat[6], longitude: bsktLong[6]))
+            //Hole 8
+            Marker("8", monogram: Text("8"),coordinate: CLLocationCoordinate2D(latitude: teeLat[7], longitude: teeLong[7]))
+                .tint(.blue)
+            Marker("8", systemImage: "flag.fill", coordinate: CLLocationCoordinate2D(latitude: bsktLat[7], longitude: bsktLong[7]))
+            //Hole 9
+            Marker("9", monogram: Text("9"),coordinate: CLLocationCoordinate2D(latitude: teeLat[8], longitude: teeLong[8]))
+                .tint(.blue)
+            Marker("9", systemImage: "flag.fill", coordinate: CLLocationCoordinate2D(latitude: bsktLat[8], longitude: bsktLong[8]))
+            //Hole 10
+            Marker("10", monogram: Text("10"),coordinate: CLLocationCoordinate2D(latitude: teeLat[9], longitude: teeLong[9]))
+                .tint(.blue)
+            Marker("10", systemImage: "flag.fill", coordinate: CLLocationCoordinate2D(latitude: bsktLat[9], longitude: bsktLong[9]))
+            //Hole 11
+            Marker("11", monogram: Text("11"),coordinate: CLLocationCoordinate2D(latitude: teeLat[10], longitude: teeLong[10]))
+                .tint(.blue)
+            Marker("11", systemImage: "flag.fill", coordinate: CLLocationCoordinate2D(latitude: bsktLat[10], longitude: bsktLong[10]))
+            //Hole 12
+            Marker("12", monogram: Text("12"),coordinate: CLLocationCoordinate2D(latitude: teeLat[11], longitude: teeLong[11]))
+                .tint(.blue)
+            Marker("12", systemImage: "flag.fill", coordinate: CLLocationCoordinate2D(latitude: bsktLat[11], longitude: bsktLong[11]))
+            //Hole 13
+            Marker("13", monogram: Text("13"),coordinate: CLLocationCoordinate2D(latitude: teeLat[12], longitude: teeLong[12]))
+                .tint(.blue)
+            Marker("13", systemImage: "flag.fill", coordinate: CLLocationCoordinate2D(latitude: bsktLat[12], longitude: bsktLong[12]))
+            //Hole 14
+            Marker("14", monogram: Text("14"),coordinate: CLLocationCoordinate2D(latitude: teeLat[13], longitude: teeLong[13]))
+                .tint(.blue)
+            Marker("14", systemImage: "flag.fill", coordinate: CLLocationCoordinate2D(latitude: bsktLat[13], longitude: bsktLong[13]))
+            //Hole 15
+            Marker("15", monogram: Text("15"),coordinate: CLLocationCoordinate2D(latitude: teeLat[14], longitude: teeLong[14]))
+                .tint(.blue)
+            Marker("15", systemImage: "flag.fill", coordinate: CLLocationCoordinate2D(latitude: bsktLat[14], longitude: bsktLong[14]))
+            //Hole 16
+            Marker("16", monogram: Text("16"),coordinate: CLLocationCoordinate2D(latitude: teeLat[15], longitude: teeLong[15]))
+                .tint(.blue)
+            Marker("16", systemImage: "flag.fill", coordinate: CLLocationCoordinate2D(latitude: bsktLat[15], longitude: bsktLong[15]))
+            //Hole 17
+            Marker("17", monogram: Text("17"),coordinate: CLLocationCoordinate2D(latitude: teeLat[16], longitude: teeLong[16]))
+                .tint(.blue)
+            Marker("17", systemImage: "flag.fill", coordinate: CLLocationCoordinate2D(latitude: bsktLat[16], longitude: bsktLong[16]))
+            //Hole 18
+            Marker("18", monogram: Text("18"),coordinate: CLLocationCoordinate2D(latitude: teeLat[17], longitude: teeLong[17]))
+                .tint(.blue)
+            Marker("18", systemImage: "flag.fill", coordinate: CLLocationCoordinate2D(latitude: bsktLat[17], longitude: bsktLong[17]))
             
         }
-        .mapStyle(.standard)
+        .mapStyle(.hybrid)
         
         //Top Banner
         .safeAreaInset(edge: .top) {
             HStack {
+                Spacer()
                 Image(systemName: "flag.circle.fill")
                 Text("Aggie Greens Disc Golf")
-                    .fontDesign(.rounded)
-                    .font(.largeTitle)
+                    .font(.largeTitle.lowercaseSmallCaps())
+                Spacer()
+                Circle()
+                    .frame(width: 80, height: 80)
+                    //.offset(y: 40)
+                    .overlay {
+                        Text("\(totalScore)")
+                            .font(.largeTitle.lowercaseSmallCaps())
+                            .foregroundStyle(.blue)
+                    }
+                    
+                Button {
+                    camera = .automatic
+                } label: {
+                    Image(systemName: "map.circle")
+                }
+                .padding()
+
             }
+            .padding(.bottom)
+            .font(.largeTitle)
+            .foregroundStyle(.white)
+            .background(.blue)
+            .opacity(0.7)
         }
         
         
         
         
         //Bottom Banner
-        .safeAreaInset(edge: .bottom) {
-                HStack {
-                    Button {
-                        //Code
-                        camera = .region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: (teeLat[0]+bsktLat[0])/2, longitude: (teeLong[0]+bsktLong[0])/2), latitudinalMeters: 150, longitudinalMeters: 150))
-                    } label: {
-                        Text("1")
-                            .font(.largeTitle)
-                            .padding()
+        .safeAreaInset(edge: .bottom, spacing: 100) {
+            
+            
+            HStack {
+                Button {
+                    print("Back button pressed")
+                    lastHole()
+                } label: {
+                    Image(systemName: "lessthan.circle")
+                        .font(.largeTitle)
+                        .foregroundStyle(.blue)
+                }
+                .disabled(index == 0)
+                
+                VStack(alignment: .leading) {
+                    Text("Hole \(index + 1)")
+                        .font(.largeTitle.lowercaseSmallCaps())
+                    HStack{
+                        Text("\(distance[index]) ft")
+                            .font(.subheadline)
+                        Text("Par 3")
                     }
+                }
+                Spacer()
                     Button {
                         //Score -1
+                        holeScore -= 1
                     } label: {
                         Text("-1")
+                           .padding(20)
+                           .font(.title.lowercaseSmallCaps())
                     }
-                    
+                    .buttonStyle(.bordered)
+                    Spacer()
                     Button {
                         //Score +1
+                        holeScore += 1
                     } label: {
                         Text("+1")
+                            .padding(20)
+                            .font(.title.lowercaseSmallCaps())
                     }
+                    .buttonStyle(.bordered)
+                Spacer()
+                Spacer()
+                VStack {
+                    Text("Score for hole:")
+                    Circle()
+                        .frame(width: 60, height: 60)
+                        .overlay {
+                            Text("\(holeScore)")
+                                .font(.largeTitle.lowercaseSmallCaps())
+                                .foregroundStyle(.white)
+                        }
+                   
+                        .foregroundStyle(holeScore < 3 ? .green: (holeScore == 3 ? .blue: .red))
+                        
+                }
+                .font(.title.lowercaseSmallCaps())
+                Spacer()
+                Button {
+                    nextHole()
+                } label: {
+                    Image(systemName: "greaterthan.circle")
+                        .font(.largeTitle)
+                        .foregroundStyle(.blue)
+                }
             }
-            .background(.thinMaterial)
+                .padding(60)
+                .background(.thinMaterial)
             
             
 
         }
+        .sheet(isPresented: $start) {
+            VStack {
+                Spacer()
+                Text("Welcome to Aggie Greens \nDisc Golf Course!")
+                    .font(.largeTitle.lowercaseSmallCaps())
+                Spacer()
+                Button("Start") {
+                    start = false
+                    camera = .region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: (teeLat[index]+bsktLat[index])/2, longitude: (teeLong[index]+bsktLong[index])/2), latitudinalMeters: 120, longitudinalMeters: 120))
+                }
+                .font(.largeTitle)
+                .buttonStyle(.bordered)
+                Spacer()
+            }
+        }
         
 
     
+    }
+    
+    func nextHole() {
+        if index == 17 {
+            index = 17
+        } else {
+            index += 1
+        }
+        
+        camera = .region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: (teeLat[index]+bsktLat[index])/2, longitude: (teeLong[index]+bsktLong[index])/2), latitudinalMeters: 120, longitudinalMeters: 120))
+    
+        totalScore += holeScore
+        
+        holeScore = 0
+    }
+    
+    func lastHole() {
+        if index == 0 {
+            index = 0
+        } else {
+            index -= 1
+        }
+        camera = .region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: (teeLat[index]+bsktLat[index])/2, longitude: (teeLong[index]+bsktLong[index])/2), latitudinalMeters: 120, longitudinalMeters: 120))
     }
 }
 
