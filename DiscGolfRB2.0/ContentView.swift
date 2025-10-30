@@ -111,7 +111,11 @@ struct ContentView: View {
     
     @State var holeScore: Int = 0
     
+    @State var holeScores: [Int] = []
+    
     @State var totalScore: Int = 0
+    
+    @State var scoreSheet: Bool = false
     
     @State var mapStyle: String = "hybrid"
     
@@ -209,9 +213,15 @@ struct ContentView: View {
                             .font(.largeTitle.lowercaseSmallCaps())
                             .foregroundStyle(.blue)
                     }
-                    
+                Button{
+                    scoreSheet.toggle()
+                } label: {
+                    Image(systemName: "pencil.and.list.clipboard")
+                }
+                .padding()
                 Button {
                     camera = .automatic
+                    index = 0
                 } label: {
                     Image(systemName: "map.circle")
                 }
@@ -276,21 +286,36 @@ struct ContentView: View {
                 Spacer()
                 VStack {
                     Text("Score for hole:")
-                    Circle()
-                        .frame(width: 60, height: 60)
-                        .overlay {
-                            Text("\(holeScore)")
-                                .font(.largeTitle.lowercaseSmallCaps())
-                                .foregroundStyle(.white)
-                        }
-                   
-                        .foregroundStyle(holeScore < 3 ? .green: (holeScore == 3 ? .blue: .red))
+                    HStack {
+                        Circle()
+                            .frame(width: 60, height: 60)
+                            .overlay {
+                                Text("\(holeScore)")
+                                    .font(.largeTitle.lowercaseSmallCaps())
+                                    .foregroundStyle(.white)
+                            }
                         
+                            .foregroundStyle(holeScore < 3 ? .green: (holeScore == 3 ? .blue: .red))
+                        Button {
+                            totalScore += holeScore
+                            
+                            holeScores.append(holeScore)
+                            
+                            holeScore = 0
+                        } label :
+                        {
+                            Text("Save")
+                                .padding()
+                                .font(.title.lowercaseSmallCaps())
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
                 }
                 .font(.title.lowercaseSmallCaps())
                 Spacer()
                 Button {
-                    nextHole()
+                        nextHole()
+                    
                 } label: {
                     Image(systemName: "greaterthan.circle")
                         .font(.largeTitle)
@@ -319,6 +344,23 @@ struct ContentView: View {
             }
         }
         
+        .sheet(isPresented: $scoreSheet) {
+            VStack {
+                List {
+                    ForEach(holeScores, id: \.self) { score in
+                        Text("Hole   \(holeScores.firstIndex(of: score)! + 1):    \(score)")
+                            .foregroundStyle(holeScore < 3 ? .green: (holeScore == 3 ? .blue: .red))
+                    }
+                }
+                Button(action: {
+                    scoreSheet.toggle()
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                }
+                
+            }
+        }
+        
 
     
     }
@@ -331,10 +373,7 @@ struct ContentView: View {
         }
         
         camera = .region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: (teeLat[index]+bsktLat[index])/2, longitude: (teeLong[index]+bsktLong[index])/2), latitudinalMeters: 120, longitudinalMeters: 120))
-    
-        totalScore += holeScore
-        
-        holeScore = 0
+
     }
     
     func lastHole() {
